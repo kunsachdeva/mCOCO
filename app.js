@@ -25,7 +25,7 @@ app.get('/call/:num', function(req, res) {
 });
 
 app.post('/conversation/:num/:step',function(req,res){
-    res.send(conversation(Number(req.params.step),false,req.body.Digits))
+    res.send(conversation(Number(req.params.step),false,req.body.Digits,req.params.num))
 })
 
 app.listen((process.env.PORT)?process.env.PORT:3000, function () {
