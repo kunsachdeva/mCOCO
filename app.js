@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.get('/call/:num', function(req, res) {
     client.calls.create({  
-        url:conversation(1,true,null),
+        url:conversation(1,true,null,req.params.num),
         to:req.params.num,
         from:TWILIO.registeredNumber
     },function(err,call){
@@ -24,7 +24,7 @@ app.get('/call/:num', function(req, res) {
     res.send('Calling '+req.params.num)
 });
 
-app.post('/conversation/:step',function(req,res){
+app.post('/conversation/:num/:step',function(req,res){
     res.send(conversation(Number(req.params.step),false,req.body.Digits))
 })
 

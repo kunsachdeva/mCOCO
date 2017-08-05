@@ -1,7 +1,13 @@
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 var url=require('./../constants/twilio').url
+var formatter=require('./../utils/formatter')
+var firebase = require('firebase');
+var firebaseConfig = require('../constants/firebase')
 
-function conversation(step,isUrl,input){
+firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
+
+function conversation(step,isUrl,input,id){
     const response = new VoiceResponse();
     let gather = null
     switch(step){
@@ -10,18 +16,22 @@ function conversation(step,isUrl,input){
                 input: 'speech dtmf',
                 timeout: 90,
                 numDigits: 1,
-                action:url+'conversation/'+(step+1)
+                action:url+'conversation/'+id.toString()+'/'+(step+1)
             });
             gather.say('Welcome!');
             gather.say('Press one if you have coconuts to sell');
             break;
         case 2:
             if(input=='1'){
+                var key=db.ref().child('pickup').push({
+                    farmer: id
+                }).key;
+                id=key;
                 gather = response.gather({
                     input: 'speech dtmf',
-                    timeout: 15,
+                    timeout: 5,
                     numDigits: 10,
-                    action:url+'conversation/'+(step+1)
+                    action:url+'conversation/'+id.toString()+'/'+(step+1)
                 });
                 gather.say("How many coconuts do you have?")
             }
@@ -31,11 +41,14 @@ function conversation(step,isUrl,input){
             }
             break;
         case 3:
+            var updates = {};
+            updates['/pickup/' + id+'/coconutCount'] = Number(input);
+            db.ref().update(updates);
             gather = response.gather({
                 input: 'speech dtmf',
                 timeout: 90,
                 numDigits: 1,
-                action:url+'conversation/'+(step+1)
+                action:url+'conversation/'+id.toString()+'/'+(step+1)
             });
             gather.say("You entered "+Number(input)+" coconuts.")
             gather.say("Press One if that is correct")
@@ -47,7 +60,7 @@ function conversation(step,isUrl,input){
                     input: 'speech dtmf',
                     timeout: 90,
                     numDigits: 1,
-                    action:url+'conversation/'+(step+1)
+                    action:url+'conversation/'+id.toString()+'/'+(step+1)
                 });
                 gather.say("Which day would you prefer for collection?")
                 gather.say("Press One for Monday")
@@ -58,7 +71,16 @@ function conversation(step,isUrl,input){
                 gather.say("Press Six for Saturday")
                 gather.say("Press Seven for Sunday")
             }
-            else return conversation(2,isUrl,'1')
+            else return conversation(2,isUrl,'1',id)
+            break;
+        case 5:
+            var day=Number(input)-1
+            var dayName=formatter.getDayName(day)
+            var updates = {};
+            updates['/pickup/' + id+'/pickupDate'] = formatter.calculatePickupDateFromDay(day)
+            db.ref().update(updates);
+            response.say("Congratulations!")
+            response.say("Your order has been placed for upcoming "+dayName)
             break;
     }
     if(isUrl) return 'http://twimlets.com/echo?Twiml='+encodeURI(response.toString());
