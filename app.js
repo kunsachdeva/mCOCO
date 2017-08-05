@@ -19,11 +19,11 @@ app.get('/call/:num', function(req, res) {
     res.send('Calling '+req.params.num)
 });
 
-app.get('/conversation/:step',function(req,res){
+app.post('/conversation/:step',function(req,res){
     console.log(req.params)
-    res.send(conversation(2))
+    res.send(conversation(Number(req.params.step)))
 })
 
-app.listen(process.env.PORT, function () {
+app.listen((process.env.PORT)?process.env.PORT:3000, function () {
   console.log('Example app listening on port 3000!')
 })
