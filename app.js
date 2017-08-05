@@ -7,6 +7,9 @@ var client = require('twilio')(TWILIO.accountSsid,TWILIO.authToken);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 //app.use(express.bodyParser());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.get('/call/:num', function(req, res) {
     client.calls.create({  
         url:conversation(1,true,null),
