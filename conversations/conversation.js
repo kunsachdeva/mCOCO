@@ -6,8 +6,15 @@ var firebaseConfig = require('../constants/firebase')
 
 firebase.initializeApp(firebaseConfig);
 var db = firebase.database();
-
-function conversation(step,isUrl,input,id){
+async function as3(){
+await firebase.database().ref('/pickup/-KqnXr129MZ8yICRq-Yc').once('value').then(function(snapshot) {
+  var username = snapshot.val().farmer;
+  console.log(username)
+});
+console.log(99)
+}
+as3()
+async function conversation(step,isUrl,input,id){
     const response = new VoiceResponse();
     let gather = null
     switch(step){
@@ -71,7 +78,11 @@ function conversation(step,isUrl,input,id){
                 gather.say("Press Six for Saturday")
                 gather.say("Press Seven for Sunday")
             }
-            else return conversation(2,isUrl,'1',id)
+            else
+                await firebase.database().ref('/pickup/'+id).once('value').then(function(snapshot) {
+                    var farmer = snapshot.val().farmer;
+                    return conversation(2,isUrl,'1',farmer)
+                });
             break;
         case 5:
             var day=Number(input)-1
