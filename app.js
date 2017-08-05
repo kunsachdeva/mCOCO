@@ -7,7 +7,7 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 app.get('/call/:num', function(req, res) {
     client.calls.create({  
-        url:conversation(1),
+        url:conversation(1,true),
         to:req.params.num,
         from:TWILIO.registeredNumber
     },function(err,call){
