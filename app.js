@@ -1,13 +1,15 @@
 var express = require('express');
 var TWILIO = require('./constants/twilio')
 var conversation = require('./conversations/conversation')
+const bodyParser = require('body-parser');
 var app = express();
 var client = require('twilio')(TWILIO.accountSsid,TWILIO.authToken);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
-
+//app.use(express.bodyParser());
+app.use(bodyParser.json());
 app.get('/call/:num', function(req, res) {
     client.calls.create({  
-        url:conversation(1,true),
+        url:conversation(1,true,null),
         to:req.params.num,
         from:TWILIO.registeredNumber
     },function(err,call){
@@ -20,8 +22,8 @@ app.get('/call/:num', function(req, res) {
 });
 
 app.post('/conversation/:step',function(req,res){
-    console.log(req.params)
-    res.send(conversation(Number(req.params.step)))
+    console.log(req.body)
+    res.send(conversation(Number(req.params.step),false,req.body.Digits))
 })
 
 app.listen((process.env.PORT)?process.env.PORT:3000, function () {

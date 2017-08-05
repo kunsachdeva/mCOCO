@@ -1,6 +1,6 @@
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 var url=require('./../constants/twilio').url
-function conversation(step,isUrl){
+function conversation(step,isUrl,input){
     const response = new VoiceResponse();
     let gather = null
     switch(step){
@@ -14,7 +14,7 @@ function conversation(step,isUrl){
             gather.say('Welcome!');
             gather.say('Press one if you have coconuts to sell');
         case 2:
-            response.play('http://www.sample-videos.com/audio/mp3/india-national-anthem.mp3');
+            response.say('You pressed '+input);
     }
     if(isUrl) return 'http://twimlets.com/echo?Twiml='+encodeURI(response.toString());
     else return response.toString()
