@@ -2,7 +2,6 @@ var express = require('express');
 var TWILIO = require('./constants/twilio')
 var conversation = require('./conversations/conversation')
 var app = express();
-
 var client = require('twilio')(TWILIO.accountSsid,TWILIO.authToken);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
