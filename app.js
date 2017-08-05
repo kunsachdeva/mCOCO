@@ -25,6 +25,6 @@ app.get('/conversation/:step',function(req,res){
     res.send(conversation(2))
 })
 
-app.listen(3000, function () {
+app.listen(process.env.PORT, function () {
   console.log('Example app listening on port 3000!')
 })
