@@ -20,13 +20,13 @@ function conversation(step,isUrl,input){
                 gather = response.gather({
                     input: 'speech dtmf',
                     timeout: 15,
-                    numDigits: 1,
+                    numDigits: 10,
                     action:url+'conversation/'+(step+1)
                 });
                 gather.say("How many coconuts do you have?")
             }
             else {
-                response.say("Thank You, Please try again");
+                response.say("Thank You, Please call us later");
                 response.hangup();
             }
             break;
