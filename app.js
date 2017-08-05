@@ -25,7 +25,6 @@ app.get('/call/:num', function(req, res) {
 });
 
 app.post('/conversation/:step',function(req,res){
-    console.log(req.body)
     res.send(conversation(Number(req.params.step),false,req.body.Digits))
 })
 
