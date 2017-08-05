@@ -6,19 +6,17 @@ var firebaseConfig = require('../constants/firebase')
 
 firebase.initializeApp(firebaseConfig);
 var db = firebase.database();
-async function as3(){
-await firebase.database().ref('/pickup/-KqnXr129MZ8yICRq-Yc').once('value').then(function(snapshot) {
-  var username = snapshot.val().farmer;
-  console.log(username)
-});
-console.log(99)
-}
-as3()
-async function conversation(step,isUrl,input,id){
+
+function conversation(step,isUrl,input,id){
     const response = new VoiceResponse();
     let gather = null
     switch(step){
         case 1:
+            var key=db.ref().child('pickup').push({
+                farmer: id,
+                status:'Incomplete'
+            }).key;
+            id=key;
             gather = response.gather({
                 input: 'speech dtmf',
                 timeout: 90,
@@ -30,10 +28,6 @@ async function conversation(step,isUrl,input,id){
             break;
         case 2:
             if(input=='1'){
-                var key=db.ref().child('pickup').push({
-                    farmer: id
-                }).key;
-                id=key;
                 gather = response.gather({
                     input: 'speech dtmf',
                     timeout: 5,
@@ -78,17 +72,14 @@ async function conversation(step,isUrl,input,id){
                 gather.say("Press Six for Saturday")
                 gather.say("Press Seven for Sunday")
             }
-            else
-                await firebase.database().ref('/pickup/'+id).once('value').then(function(snapshot) {
-                    var farmer = snapshot.val().farmer;
-                    return conversation(2,isUrl,'1',farmer)
-                });
+            else return conversation(2,isUrl,'1',id)
             break;
         case 5:
             var day=Number(input)-1
             var dayName=formatter.getDayName(day)
             var updates = {};
             updates['/pickup/' + id+'/pickupDate'] = formatter.calculatePickupDateFromDay(day)
+            updates['/pickup/' + id+'/status'] = 'Awaiting Driver'
             db.ref().update(updates);
             response.say("Congratulations!")
             response.say("Your order has been placed for upcoming "+dayName)
