@@ -6,4 +6,4 @@ var twilio={
 }
 var url="http://mcoco.azurewebsites.net/"
 module.exports=twilio
-module.exports.url="url"
+module.exports.url=url
