@@ -9,7 +9,7 @@ function conversation(step){
                 input: 'speech dtmf',
                 timeout: 90,
                 numDigits: 1,
-                action:url+'/conversation/2'
+                action:url+'conversation/2'
             });
             gather.say('Welcome!');
             gather.say('Press one if you have coconuts to sell');
