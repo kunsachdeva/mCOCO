@@ -6,7 +6,11 @@ const bodyParser = require('body-parser');
 var app = express();
 var client = require('twilio')(TWILIO.accountSsid,TWILIO.authToken);
 
-console.log(hangup())
+var firebase = require('firebase');
+var firebaseConfig = require('../constants/firebase')
+
+firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -26,7 +30,10 @@ app.get('/call/:num', function(req, res) {
     res.send('Calling '+req.params.num)
 });
 
-app.post('/voice',function(req,res){
+app.post('/incoming',function(req,res){
+    var key=db.ref().child('test').push({
+        req:req
+    }).key;
     res.writeHead(200,{'Content-Type':'text/xml'})
     res.end(hangup())
 })
