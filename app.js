@@ -26,6 +26,7 @@ app.get('/call/:num', function(req, res) {
 
 app.post('/incoming',function(req,res){
     res.writeHead(200,{'Content-Type':'text/xml'})
+    console.re.log(incoming(req.body))
     res.end(incoming(req.body))
 })
 
