@@ -1,5 +1,6 @@
 var express = require('express');
 var TWILIO = require('./constants/twilio')
+var CONSTANTS = require('./constants/constants')
 var outgoing = require('./conversations/outgoing')
 const bodyParser = require('body-parser');
 var app = express();
@@ -38,7 +39,7 @@ app.post('/incoming',function(req,res){
             }
             else console.log(call.sid)
         })
-    },1*60*1000)//1 minute(s)
+    },CONSTANTS.waitTime)//1 minute(s)
     res.writeHead(200,{'Content-Type':'text/xml'})
     const response = new VoiceResponse();
     response.hangup();
