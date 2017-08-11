@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "console-remote-client": "^0.4.3",
     "express": "^4.15.3",
     "firebase": "^4.2.0",
     "twilio": "^3.6.1"
