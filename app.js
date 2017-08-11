@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.get('/call/:num', function(req, res) {
     client.calls.create({  
-        url:conversation(1,true,null,req.params.num),
+        url:outgoing(1,true,null,req.params.num),
         to:req.params.num,
         from:TWILIO.registeredNumber
     },function(err,call){
@@ -30,7 +30,7 @@ app.post('/incoming',function(req,res){
 })
 
 app.post('/conversation/:num/:step',function(req,res){
-    res.send(conversation(Number(req.params.step),false,req.body.Digits,req.params.num))
+    res.send(outgoing(Number(req.params.step),false,req.body.Digits,req.params.num))
 })
 
 app.listen((process.env.PORT)?process.env.PORT:3000, function () {
