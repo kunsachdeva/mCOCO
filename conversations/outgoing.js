@@ -88,5 +88,5 @@ function conversation(step,isUrl,input,id){
     if(isUrl) return 'http://twimlets.com/echo?Twiml='+encodeURI(response.toString());
     else return response.toString()
 }
-
-module.exports=conversation
+var outgoing=conversation
+module.exports=outgoing

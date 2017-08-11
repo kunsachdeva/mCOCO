@@ -1,16 +1,10 @@
 var express = require('express');
 var TWILIO = require('./constants/twilio')
-var conversation = require('./conversations/conversation')
-var hangup = require('./conversations/hangup')
+var outgoing = require('./conversations/outgoing')
+var hangup = require('./conversations/incoming')
 const bodyParser = require('body-parser');
 var app = express();
 var client = require('twilio')(TWILIO.accountSsid,TWILIO.authToken);
-
-var firebase = require('firebase');
-var firebaseConfig = require('../constants/firebase')
-
-firebase.initializeApp(firebaseConfig);
-var db = firebase.database();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -31,11 +25,8 @@ app.get('/call/:num', function(req, res) {
 });
 
 app.post('/incoming',function(req,res){
-    var key=db.ref().child('test').push({
-        req:req
-    }).key;
     res.writeHead(200,{'Content-Type':'text/xml'})
-    res.end(hangup())
+    res.end(incoming(req))
 })
 
 app.post('/conversation/:num/:step',function(req,res){
