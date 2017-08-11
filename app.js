@@ -26,7 +26,7 @@ app.get('/call/:num', function(req, res) {
 
 app.post('/incoming',function(req,res){
     res.writeHead(200,{'Content-Type':'text/xml'})
-    res.end(incoming(req))
+    res.end(incoming(req.body))
 })
 
 app.post('/conversation/:num/:step',function(req,res){

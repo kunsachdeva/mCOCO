@@ -1,11 +1,7 @@
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 var url=require('./../constants/twilio').url
 var formatter=require('./../utils/formatter')
-var firebase = require('firebase');
-var firebaseConfig = require('../constants/firebase')
-
-firebase.initializeApp(firebaseConfig);
-var db = firebase.database();
+var db = require('../constants/firebase')
 
 function conversation(step,isUrl,input,id){
     const response = new VoiceResponse();
