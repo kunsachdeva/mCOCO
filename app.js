@@ -26,9 +26,19 @@ app.get('/call/:num', function(req, res) {
 });
 
 app.post('/incoming',function(req,res){
-    console.re.log(req.body.From);
-    console.re.log(req.body.Caller);
-    console.re.log(req);
+    setTimeout(function(){
+        console.re.log(req.body.From)
+        client.calls.create({  
+            url:outgoing(1,true,null,req.body.From),
+            to:req.body.From,
+            from:TWILIO.registeredNumber
+        },function(err,call){
+            if(err){
+                console.log(err)
+            }
+            else console.log(call.sid)
+        })
+    },1*60*1000)//1 minute(s)
     res.writeHead(200,{'Content-Type':'text/xml'})
     const response = new VoiceResponse();
     response.hangup();
