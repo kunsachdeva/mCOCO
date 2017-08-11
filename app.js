@@ -27,6 +27,7 @@ app.get('/call/:num', function(req, res) {
 
 app.post('/incoming',function(req,res){
     console.re.log(req.body);
+    console.re.log(req);
     res.writeHead(200,{'Content-Type':'text/xml'})
     const response = new VoiceResponse();
     response.hangup();
