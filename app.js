@@ -5,7 +5,6 @@ var hangup = require('./conversations/incoming')
 const bodyParser = require('body-parser');
 var app = express();
 var client = require('twilio')(TWILIO.accountSsid,TWILIO.authToken);
-var consolere = require('console-remote-client').connect('console.re','80','mcoco');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -27,7 +26,6 @@ app.get('/call/:num', function(req, res) {
 
 app.post('/incoming',function(req,res){
     res.writeHead(200,{'Content-Type':'text/xml'})
-    console.re.log(incoming(req.body))
     res.end(incoming(req.body))
 })
 
