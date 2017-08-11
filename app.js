@@ -1,11 +1,13 @@
 var express = require('express');
 var TWILIO = require('./constants/twilio')
 var conversation = require('./conversations/conversation')
+var hangup = require('./conversations/hangup')
 const bodyParser = require('body-parser');
 var app = express();
 var client = require('twilio')(TWILIO.accountSsid,TWILIO.authToken);
-const VoiceResponse = require('twilio').twiml.VoiceResponse;
-//app.use(express.bodyParser());
+
+console.log(hangup())
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -23,6 +25,11 @@ app.get('/call/:num', function(req, res) {
     })
     res.send('Calling '+req.params.num)
 });
+
+app.post('/voice',function(req,res){
+    res.writeHead(200,{'Content-Type':'text/xml'})
+    res.end(hangup())
+})
 
 app.post('/conversation/:num/:step',function(req,res){
     res.send(conversation(Number(req.params.step),false,req.body.Digits,req.params.num))

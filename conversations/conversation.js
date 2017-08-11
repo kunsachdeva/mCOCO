@@ -89,10 +89,4 @@ function conversation(step,isUrl,input,id){
     else return response.toString()
 }
 
-function handleStep2(input){
-    if(input=='1'){
-
-    }
-}
-
 module.exports=conversation
