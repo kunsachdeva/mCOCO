@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "baidu-yuyin-api": "^0.1.9",
     "body-parser": "^1.17.2",
     "console-remote-client": "^0.4.3",
     "express": "^4.15.3",

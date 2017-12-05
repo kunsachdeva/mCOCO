@@ -72,6 +72,7 @@ function conversation(step,isUrl,input,id){
             break;
         case 5:
             var day=Number(input)-1
+            if(day<0 || day>6)day=0
             var dayName=formatter.getDayName(day)
             var updates = {};
             updates['/pickup/' + id+'/pickupDate'] = formatter.calculatePickupDateFromDay(day)

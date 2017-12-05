@@ -7,7 +7,10 @@ function getDayName(i){
     weekday[4] = "Friday";
     weekday[5] = "Saturday";
     weekday[6] =  "Sunday";
-
+    weekday[7] = "Monday";
+    weekday[8] = "Monday";
+    weekday[9] = "Monday";
+    weekday[10] = "Monday";
     return weekday[i];
 }
 
